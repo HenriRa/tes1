@@ -1,16 +1,14 @@
 package com.backend.tes.domain;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.Timestamp;
 
-@Table(name="product")
+@Entity
+@Table(name="products")
 @Data
 @Builder
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
@@ -24,11 +22,8 @@ public class Product {
     private String code;
     private String name;
     private String brand;
-
-    private Blob picture;
-
     private String color;
-    private BigDecimal price;
-    private String description;
+//    private BigDecimal price;
+//    private String description;
 
 }
