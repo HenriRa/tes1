@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.sql.Blob;
 import java.sql.Timestamp;
 
 @Entity
@@ -19,11 +18,11 @@ public class Product {
     private Long id;
     private Timestamp createdOn;
     private Timestamp modifiedOn;
-    private String code;
-    private String name;
-    private String brand;
-    private String color;
-//    private BigDecimal price;
-//    private String description;
+    private int brandId;
+    private int colorId;
+    private String sku;
+    private String title;
+    private String description;
+    private String img_url;
 
 }
