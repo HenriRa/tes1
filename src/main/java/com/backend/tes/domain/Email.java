@@ -19,5 +19,5 @@ public class Email {
     private String status;
 
     private OrderEvent orderEvent;
-    private Long orderId;
+    // private Order orderId;
 }

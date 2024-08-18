@@ -15,5 +15,5 @@ public class OrderEvent {
     private String name;
     private String logDescription;
 
-    private Long orderId;
+    private Order orderId;
 }

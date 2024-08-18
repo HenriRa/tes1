@@ -1,13 +1,15 @@
 package com.backend.tes.api.dto;
 
+import com.backend.tes.domain.Brand;
+
+import java.util.List;
+
 public record ProductDto(
-        Long id,
-        String brand,
-        String color,
-        String sku,
-        String title,
-        String description,
-        String img_url
+        BrandDto brand,
+        String code,
+        String name,
+        String shortDescription,
+        List<ProductVariantDto> productVariants
 
 ) {
 

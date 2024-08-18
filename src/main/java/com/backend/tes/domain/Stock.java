@@ -1,20 +1,24 @@
 package com.backend.tes.domain;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
 
+@Entity
+@Table(name="stock")
 @Data
 @Builder
-@AllArgsConstructor(access = AccessLevel.MODULE)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
 public class Stock {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Timestamp createdOn;
-    private Timestamp modifiedOn;
-    private String productCode;
-    private Boolean inStock;
+
+    @OneToOne(mappedBy = "stock")
+    private ProductVariant productVariant;
+
     private Integer qtyInStock;
 
-    private Long productId;
 }

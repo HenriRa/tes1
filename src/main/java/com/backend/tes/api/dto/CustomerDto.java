@@ -1,9 +1,14 @@
 package com.backend.tes.api.dto;
 
+import com.backend.tes.domain.Address;
+
+import java.util.List;
+
 public record CustomerDto (
-        Long id,
         String firstName,
         String lastName,
-        String email
+        String email,
+        String telephone,
+        List<AddressDto> addressList
 ){
 }
