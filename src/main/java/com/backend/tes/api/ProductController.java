@@ -1,13 +1,14 @@
 package com.backend.tes.api;
 
 import com.backend.tes.api.dto.ProductDto;
+import com.backend.tes.domain.Color;
 import com.backend.tes.domain.Product;
 import com.backend.tes.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 
 @RestController
@@ -17,20 +18,29 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-     public @ResponseBody Iterable<Product> getAllProducts(){
+    public @ResponseBody List<ProductDto> getAllProducts(){
         return productService.findAllProducts();
     }
-//    public @ResponseBody List<ProductDto> getAllProducts(){
-//        return productService.findAllProducts().stream()
-//                .map(ProductService::productToDto)
-//                .collect(Collectors.toList());
-//    }
 
     @GetMapping("/products?id={id}")
-    public @ResponseBody Product getProductById(@PathVariable Long id){
-        return productService.findProductById(id).orElse(null);
+    public @ResponseBody ProductDto getProductById(@PathVariable Long id){
+        return productService.findProductById(id);
     }
 
 
+//    @GetMapping("/products")
+//    public @ResponseBody List<Product> getAllProducts(){
+//        return productService.findAllProducts();
+//    }
+//
+//    @GetMapping("/colors")
+//    public @ResponseBody List<Color> getAllColors(){
+//        return productService.findAllColors();
+//    }
+//
+//    @GetMapping("/products?id={id}")
+//    public @ResponseBody Optional<Product> getProductById(@PathVariable Long id){
+//        return productService.findProductById(id);
+//    }
 
 }

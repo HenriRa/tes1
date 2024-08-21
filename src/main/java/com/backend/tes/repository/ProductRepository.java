@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    List<Product> findByBrand(Brand brand);
-
-    List<Product> findByProductVariantsColor(Color color);
+//    List<Product> findByBrand(Brand brand);
+//
+//    List<Product> findByProductVariantsColor(Color color);
 
 }

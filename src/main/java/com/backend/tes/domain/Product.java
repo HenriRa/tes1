@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name="products")
@@ -20,14 +20,17 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
 
     private String code;
     private String name;
     private String shortDescription;
 
-    @OneToMany(mappedBy = "product")
-    private Set<ProductVariant> productVariants;
+    //@OneToMany(mappedBy = "product")
+    @OneToMany
+    @JoinColumn(name = "product_id")
+    private List<ProductVariant> productVariants;
 
 }

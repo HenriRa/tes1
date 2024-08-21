@@ -3,8 +3,6 @@ package com.backend.tes.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Timestamp;
-
 @Entity
 @Table(name="stock")
 @Data
@@ -16,8 +14,12 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(mappedBy = "stock")
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "variant_id", referencedColumnName = "id")
     private ProductVariant productVariant;
+
+
 
     private Integer qtyInStock;
 

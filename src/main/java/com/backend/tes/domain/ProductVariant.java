@@ -21,9 +21,9 @@ public class ProductVariant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+//    @ManyToOne
+//    @JoinColumn(name = "product_id", nullable = false)
+//    private Product product;
 
     @ManyToOne
     @JoinColumn(name = "color_id", nullable = false)
@@ -34,11 +34,17 @@ public class ProductVariant {
     private BigDecimal monthlyPrice;
     private Boolean defaultVariant;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "variant_id", referencedColumnName = "id")
+//    @OneToOne(mappedBy = "productVariant", cascade = CascadeType.ALL)
+//    @PrimaryKeyJoinColumn
+//    @OneToOne
+//    @JoinColumn(name = "id", referencedColumnName = "variant_id")
+//    private Stock stock;
+
+    @OneToOne(mappedBy = "productVariant", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private Stock stock;
 
-    @OneToMany(mappedBy = "productVariant")
-    private Set<OrderLine> orderLines;
+//    @OneToMany(mappedBy = "productVariant")
+//    private Set<OrderLine> orderLines;
 
 }
