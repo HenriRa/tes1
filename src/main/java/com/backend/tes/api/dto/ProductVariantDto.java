@@ -1,16 +1,14 @@
 package com.backend.tes.api.dto;
 
-import com.backend.tes.domain.Color;
-import com.backend.tes.domain.Stock;
-
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public record ProductVariantDto(
-        Color color,
+        String color,
         String imgUrl,
         BigDecimal fullPrice,
         BigDecimal monthlyPrice,
         Boolean defaultVariant,
-        Stock stock
+        BigInteger stock
 ) {
 }

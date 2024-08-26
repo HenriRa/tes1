@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Set;
 
 @Entity
 @Table(name="product_variants")
@@ -34,15 +33,10 @@ public class ProductVariant {
     private BigDecimal monthlyPrice;
     private Boolean defaultVariant;
 
-//    @OneToOne(mappedBy = "productVariant", cascade = CascadeType.ALL)
-//    @PrimaryKeyJoinColumn
-//    @OneToOne
-//    @JoinColumn(name = "id", referencedColumnName = "variant_id")
-//    private Stock stock;
-
-    @OneToOne(mappedBy = "productVariant", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @OneToOne
+    @JoinColumn(name = "id", referencedColumnName = "variant_id")
     private Stock stock;
+
 
 //    @OneToMany(mappedBy = "productVariant")
 //    private Set<OrderLine> orderLines;

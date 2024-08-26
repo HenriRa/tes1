@@ -1,15 +1,11 @@
 package com.backend.tes.api;
 
 import com.backend.tes.api.dto.ProductDto;
-import com.backend.tes.domain.Color;
-import com.backend.tes.domain.Product;
 import com.backend.tes.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/api/shop")
@@ -22,7 +18,7 @@ public class ProductController {
         return productService.findAllProducts();
     }
 
-    @GetMapping("/products?id={id}")
+    @GetMapping("/products/{id}")
     public @ResponseBody ProductDto getProductById(@PathVariable Long id){
         return productService.findProductById(id);
     }
