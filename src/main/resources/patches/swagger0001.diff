@@ -1,0 +1,47 @@
+From 672ecea58ddca3c3bc08b5d73081ce3793e3a219 Mon Sep 17 00:00:00 2001
+From: alinagoncarko1 <alina.goncarko@telia.lt>
+Date: Wed, 21 Aug 2024 23:04:43 +0300
+Subject: [PATCH] Added swagger UI and api-docs (application properties are
+ optional, now just added default values)
+
+---
+ pom.xml                                   | 5 +++++
+ src/main/resources/application.properties | 7 ++++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/pom.xml b/pom.xml
+index a1d72b6..89c81a0 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -42,6 +42,11 @@
+ 			<groupId>org.springframework.boot</groupId>
+ 			<artifactId>spring-boot-starter-web</artifactId>
+ 		</dependency>
++		<dependency>
++			<groupId>org.springdoc</groupId>
++			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
++			<version>2.6.0</version>
++		</dependency>
+ 
+ 		<dependency>
+ 			<groupId>com.h2database</groupId>
+diff --git a/src/main/resources/application.properties b/src/main/resources/application.properties
+index 3328007..426490e 100644
+--- a/src/main/resources/application.properties
++++ b/src/main/resources/application.properties
+@@ -6,4 +6,9 @@ spring.datasource.password = ''
+ spring.jpa.show-sql = true
+ spring.jpa.hibernate.ddl-auto = none
+ spring.jpa.database-platform = org.hibernate.dialect.H2Dialect
+-spring.jpa.defer-datasource-initialization=true
+\ No newline at end of file
++spring.jpa.defer-datasource-initialization=true
++
++# Swagger
++springdoc.swagger-ui.enabled=true
++springdoc.swagger-ui.path=/swagger-ui.html
++springdoc.api-docs.path=/api-docs
+\ No newline at end of file
+-- 
+2.41.0
+

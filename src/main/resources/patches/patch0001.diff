@@ -1,0 +1,269 @@
+From 7b0be4c41c4c7ea0db8cc81ff0d468b80861b08d Mon Sep 17 00:00:00 2001
+From: afinka77 <afinka77@gmail.com>
+Date: Wed, 21 Aug 2024 23:41:48 +0300
+Subject: [PATCH] Fixed ProductVariant<->Stock relation, Mappers
+
+---
+ .../com/backend/tes/api/ProductController.java |  8 +++++---
+ .../com/backend/tes/api/dto/ProductDto.java    |  4 ++--
+ .../backend/tes/api/dto/ProductVariantDto.java |  5 +++--
+ .../java/com/backend/tes/api/dto/StockDto.java |  4 +++-
+ .../backend/tes/api/mapper/ProductMapper.java  | 18 ++----------------
+ .../tes/api/mapper/ProductVariantMapper.java   | 14 +++++---------
+ .../backend/tes/api/mapper/StockMapper.java    |  8 ++++----
+ .../com/backend/tes/domain/ProductVariant.java |  2 +-
+ .../java/com/backend/tes/domain/Stock.java     |  7 -------
+ .../backend/tes/service/ProductService.java    | 18 +++++++-----------
+ 10 files changed, 32 insertions(+), 56 deletions(-)
+
+diff --git a/src/main/java/com/backend/tes/api/ProductController.java b/src/main/java/com/backend/tes/api/ProductController.java
+index 7eaedaf..74129c7 100644
+--- a/src/main/java/com/backend/tes/api/ProductController.java
++++ b/src/main/java/com/backend/tes/api/ProductController.java
+@@ -4,6 +4,7 @@ import com.backend.tes.api.dto.ProductDto;
+ import com.backend.tes.domain.Color;
+ import com.backend.tes.domain.Product;
+ import com.backend.tes.service.ProductService;
++import lombok.AllArgsConstructor;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.web.bind.annotation.*;
+ 
+@@ -13,16 +14,17 @@ import java.util.Optional;
+ 
+ @RestController
+ @RequestMapping("/api/shop")
++@AllArgsConstructor
+ public class ProductController {
+-    @Autowired
+-    private ProductService productService;
++
++    private final ProductService productService;
+ 
+     @GetMapping("/products")
+     public @ResponseBody List<ProductDto> getAllProducts(){
+         return productService.findAllProducts();
+     }
+ 
+-    @GetMapping("/products?id={id}")
++    @GetMapping("/products/{id}")
+     public @ResponseBody ProductDto getProductById(@PathVariable Long id){
+         return productService.findProductById(id);
+     }
+diff --git a/src/main/java/com/backend/tes/api/dto/ProductDto.java b/src/main/java/com/backend/tes/api/dto/ProductDto.java
+index febeb9d..ce42853 100644
+--- a/src/main/java/com/backend/tes/api/dto/ProductDto.java
++++ b/src/main/java/com/backend/tes/api/dto/ProductDto.java
+@@ -7,11 +7,11 @@ import java.util.List;
+ 
+ public record ProductDto(
+         Long id,
+-        Brand brand,
++        String brand,
+         String code,
+         String name,
+         String shortDescription,
+-        List<ProductVariant> productVariants
++        List<ProductVariantDto> productVariants
+ 
+ ) {
+ 
+diff --git a/src/main/java/com/backend/tes/api/dto/ProductVariantDto.java b/src/main/java/com/backend/tes/api/dto/ProductVariantDto.java
+index dd23341..98c05ad 100644
+--- a/src/main/java/com/backend/tes/api/dto/ProductVariantDto.java
++++ b/src/main/java/com/backend/tes/api/dto/ProductVariantDto.java
+@@ -4,13 +4,14 @@ import com.backend.tes.domain.Color;
+ import com.backend.tes.domain.Stock;
+ 
+ import java.math.BigDecimal;
++import java.math.BigInteger;
+ 
+ public record ProductVariantDto(
+-        Color color,
++        String color,
+         String imgUrl,
+         BigDecimal fullPrice,
+         BigDecimal monthlyPrice,
+         Boolean defaultVariant,
+-        Stock stock
++        BigInteger stockQty
+ ) {
+ }
+diff --git a/src/main/java/com/backend/tes/api/dto/StockDto.java b/src/main/java/com/backend/tes/api/dto/StockDto.java
+index 86a2e9d..05cdf9c 100644
+--- a/src/main/java/com/backend/tes/api/dto/StockDto.java
++++ b/src/main/java/com/backend/tes/api/dto/StockDto.java
+@@ -1,7 +1,9 @@
+ package com.backend.tes.api.dto;
+ 
++import java.math.BigInteger;
++
+ public record StockDto(
+         ProductVariantDto productVariant,
+-        Integer qtyInStock
++        BigInteger qtyInStock
+ ) {
+ }
+diff --git a/src/main/java/com/backend/tes/api/mapper/ProductMapper.java b/src/main/java/com/backend/tes/api/mapper/ProductMapper.java
+index 58ed4e9..eee8a5c 100644
+--- a/src/main/java/com/backend/tes/api/mapper/ProductMapper.java
++++ b/src/main/java/com/backend/tes/api/mapper/ProductMapper.java
+@@ -1,26 +1,12 @@
+ package com.backend.tes.api.mapper;
+ 
+ import com.backend.tes.api.dto.ProductDto;
+-import com.backend.tes.api.dto.ProductVariantDto;
+ import com.backend.tes.domain.Product;
+-import com.backend.tes.domain.ProductVariant;
+ import org.mapstruct.Mapper;
+ import org.mapstruct.Mapping;
+-import org.mapstruct.factory.Mappers;
+ 
+-@Mapper
+-        //(uses = ProductVariantMapper.class)
++@Mapper(componentModel = "spring", uses = ProductVariantMapper.class)
+ public interface ProductMapper {
+-
+-    ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
+-
++    @Mapping(source = "brand.name", target = "brand")
+     ProductDto productToProductDto(Product product);
+-
+-    Product productDtoToProduct(ProductDto productDto);
+-
+-    default ProductVariantDto ProductVariantToProductVariantDto(ProductVariant productVariant) {
+-        return Mappers.getMapper(ProductVariantMapper.class)
+-                .ProductVariantToProductVariantDto(productVariant);
+-    }
+-
+ }
+diff --git a/src/main/java/com/backend/tes/api/mapper/ProductVariantMapper.java b/src/main/java/com/backend/tes/api/mapper/ProductVariantMapper.java
+index 5ff4817..bb7f1fa 100644
+--- a/src/main/java/com/backend/tes/api/mapper/ProductVariantMapper.java
++++ b/src/main/java/com/backend/tes/api/mapper/ProductVariantMapper.java
+@@ -1,19 +1,15 @@
+ package com.backend.tes.api.mapper;
+ 
+-import com.backend.tes.api.dto.ProductDto;
+ import com.backend.tes.api.dto.ProductVariantDto;
+-import com.backend.tes.domain.Product;
+ import com.backend.tes.domain.ProductVariant;
+ import org.mapstruct.Mapper;
+ import org.mapstruct.Mapping;
+-import org.mapstruct.factory.Mappers;
+ 
+-@Mapper(uses = StockMapper.class)
++@Mapper(componentModel = "spring")
+ public interface ProductVariantMapper {
+ 
+-    ProductVariantMapper INSTANCE = Mappers.getMapper(ProductVariantMapper.class);
+-
+-    ProductVariantDto ProductVariantToProductVariantDto(ProductVariant productVariant);
+-
+-    Product ProductVariantDtoToProductVariant(ProductVariantDto productVariantDto);
++   @Mapping(source = "color.name", target = "color")
++   @Mapping(source = "stock.qtyInStock", target = "stockQty")
++   ProductVariantDto productVariantToProductVariantDto(ProductVariant productVariant);
+ }
++
+diff --git a/src/main/java/com/backend/tes/api/mapper/StockMapper.java b/src/main/java/com/backend/tes/api/mapper/StockMapper.java
+index 23460b8..8119e72 100644
+--- a/src/main/java/com/backend/tes/api/mapper/StockMapper.java
++++ b/src/main/java/com/backend/tes/api/mapper/StockMapper.java
+@@ -3,12 +3,12 @@ package com.backend.tes.api.mapper;
+ import com.backend.tes.api.dto.StockDto;
+ import com.backend.tes.domain.Stock;
+ import org.mapstruct.Mapper;
++import org.mapstruct.Mapping;
+ import org.mapstruct.factory.Mappers;
+ 
+-@Mapper
++@Mapper(componentModel = "spring", uses = ProductVariantMapper.class)
+ public interface StockMapper {
+ 
+-    StockMapper INSTANCE = Mappers.getMapper(StockMapper.class);
+-
+-    StockDto StockToStockDto(Stock stock);
++   @Mapping(source = "stock.qtyInStock", target = "qtyInStock")
++   StockDto StockToStockDto(Stock stock);
+ }
+diff --git a/src/main/java/com/backend/tes/domain/ProductVariant.java b/src/main/java/com/backend/tes/domain/ProductVariant.java
+index f0c0b82..7a4841d 100644
+--- a/src/main/java/com/backend/tes/domain/ProductVariant.java
++++ b/src/main/java/com/backend/tes/domain/ProductVariant.java
+@@ -40,7 +40,7 @@ public class ProductVariant {
+ //    @JoinColumn(name = "id", referencedColumnName = "variant_id")
+ //    private Stock stock;
+ 
+-    @OneToOne(mappedBy = "productVariant", cascade = CascadeType.ALL)
++    @OneToOne
+     @PrimaryKeyJoinColumn
+     private Stock stock;
+ 
+diff --git a/src/main/java/com/backend/tes/domain/Stock.java b/src/main/java/com/backend/tes/domain/Stock.java
+index 342c5f9..c01b51a 100644
+--- a/src/main/java/com/backend/tes/domain/Stock.java
++++ b/src/main/java/com/backend/tes/domain/Stock.java
+@@ -14,13 +14,6 @@ public class Stock {
+     @GeneratedValue(strategy = GenerationType.AUTO)
+     private Long id;
+ 
+-    @OneToOne
+-    @MapsId
+-    @JoinColumn(name = "variant_id", referencedColumnName = "id")
+-    private ProductVariant productVariant;
+-
+-
+-
+     private Integer qtyInStock;
+ 
+ }
+diff --git a/src/main/java/com/backend/tes/service/ProductService.java b/src/main/java/com/backend/tes/service/ProductService.java
+index ef07b58..913f41b 100644
+--- a/src/main/java/com/backend/tes/service/ProductService.java
++++ b/src/main/java/com/backend/tes/service/ProductService.java
+@@ -2,35 +2,31 @@ package com.backend.tes.service;
+ 
+ import com.backend.tes.api.dto.ProductDto;
+ import com.backend.tes.api.mapper.ProductMapper;
+-import com.backend.tes.domain.Color;
+-import com.backend.tes.domain.Product;
+ import com.backend.tes.repository.ColorRepository;
+ import com.backend.tes.repository.ProductRepository;
+-import org.springframework.beans.factory.annotation.Autowired;
++import lombok.AllArgsConstructor;
+ import org.springframework.stereotype.Service;
+ 
+ import java.util.List;
+-import java.util.Optional;
+ import java.util.stream.Collectors;
+ 
++@AllArgsConstructor
+ @Service
+ public class ProductService {
+ 
+-    @Autowired
+-    private ProductRepository productRepository;
+-
+-    @Autowired
+-    private ColorRepository colorRepository;
++    private final ProductRepository productRepository;
++    private final ColorRepository colorRepository;
++    private final ProductMapper productMapper;
+ 
+     public List<ProductDto> findAllProducts() {
+         return productRepository.findAll().stream()
+-                .map(ProductMapper.INSTANCE::productToProductDto)
++                .map(productMapper::productToProductDto)
+                 .collect(Collectors.toList());
+     }
+ 
+     public ProductDto findProductById(Long id) {
+         return productRepository.findById(id)
+-                .map(ProductMapper.INSTANCE::productToProductDto)
++                .map(productMapper::productToProductDto)
+                 .orElse(null);
+     }
+ 
+-- 
+2.41.0
+
