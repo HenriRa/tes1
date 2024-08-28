@@ -14,6 +14,11 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+//    @OneToOne
+//    @MapsId
+//    @JoinColumn(name = "variant_id", referencedColumnName = "id")
+//    private ProductVariant productVariant;
+
     private Integer qtyInStock;
 
 }

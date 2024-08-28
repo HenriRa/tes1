@@ -10,21 +10,9 @@ import java.util.List;
 
 public interface ProductVariantRepository extends JpaRepository<ProductVariant, Long> {
 
-//    List<ProductVariant> findByProduct(Product product);
-//
-//    List<ProductVariant> findByColor(Color color);
-//
-//    List<ProductVariant> findByProductAndColor(Product product, Color color);
-//
-//    List<ProductVariant> findByProductAndColorAndMonthlyPriceBetween
-//            (Product product, Color color, BigDecimal startPrice, BigDecimal endPrice);
-//
-//    List<ProductVariant> findByProductAndMonthlyPriceBetween
-//            (Product product, BigDecimal startPrice, BigDecimal endPrice);
-//
-//
-//    List<ProductVariant> findByProductAndColorAndFullPriceBetween
-//            (Product product, Color color, BigDecimal startPrice, BigDecimal endPrice);
+    List<ProductVariant> findByColor(Color color);
+
+
 //
 //    List<ProductVariant> findByProductAndFullPriceBetween(Product product, BigDecimal startPrice, BigDecimal endPrice);
 //

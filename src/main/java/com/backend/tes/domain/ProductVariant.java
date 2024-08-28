@@ -20,10 +20,6 @@ public class ProductVariant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "product_id", nullable = false)
-//    private Product product;
-
     @ManyToOne
     @JoinColumn(name = "color_id", nullable = false)
     private Color color;
@@ -33,12 +29,8 @@ public class ProductVariant {
     private BigDecimal monthlyPrice;
     private Boolean defaultVariant;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id", referencedColumnName = "variant_id")
     private Stock stock;
-
-
-//    @OneToMany(mappedBy = "productVariant")
-//    private Set<OrderLine> orderLines;
 
 }

@@ -9,6 +9,6 @@ public record ProductVariantDto(
         BigDecimal fullPrice,
         BigDecimal monthlyPrice,
         Boolean defaultVariant,
-        BigInteger stock
+        BigInteger qtyInStock
 ) {
 }

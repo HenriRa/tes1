@@ -28,7 +28,6 @@ public class Product {
     private String name;
     private String shortDescription;
 
-    //@OneToMany(mappedBy = "product")
     @OneToMany
     @JoinColumn(name = "product_id")
     private List<ProductVariant> productVariants;
