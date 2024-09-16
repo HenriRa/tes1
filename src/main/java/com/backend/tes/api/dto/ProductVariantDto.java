@@ -6,7 +6,6 @@ import java.math.BigInteger;
 public record ProductVariantDto(
         String color,
         String imgUrl,
-        BigDecimal fullPrice,
         BigDecimal monthlyPrice,
         Boolean defaultVariant,
         BigInteger qtyInStock

@@ -6,13 +6,18 @@ INSERT INTO brands (id, name)
 VALUES (1, 'Samsung'), (2, 'Xiaomi'), (3, 'Apple'), (4, 'POCO'), (5, 'Nokia'), (6, 'Sony'),
 (7, 'Redmi'), (8, 'LG');
 
-INSERT INTO products (id, brand_id, code, name, short_description)
+INSERT INTO price_intervals (id, name, min_price, max_price)
+VALUES (1, 'price_monthly_0_10', 0.00, 10.00), (2, 'price_monthly_10_50', 10.00, 50.00),
+(3, 'price_monthly_50_100', 50.00, 100.00),(4, 'price_monthly_100_150', 100.00, 150.00),
+(5, 'price_monthly_150_200', 150.00, 200.00);
+
+INSERT INTO products (id, brand_id, code, name, short_description, order_count)
 VALUES (1, 1, 'G10SAM FL6 512 GR', 'Samsung Galaxy Flip6',
-'A feature-packed Galaxy smartphone with a sleek design and a high-quality camera.'),
+'A feature-packed Galaxy smartphone with a sleek design and a high-quality camera.', 0),
 (2, 2, 'G10XIAO 14 UL 512 BL', 'Xiaomi 14 Ultra',
-'A budget-friendly smartphone with a large display and a powerful camera.'),
+'A budget-friendly smartphone with a large display and a powerful camera.', 0),
 (3, 3, 'G10IPHONE 15P 128 BL', 'Apple iPhone 15',
-'The latest iPhone model with advanced features and a powerful processor.');
+'The latest iPhone model with advanced features and a powerful processor.', 0);
 
 INSERT INTO product_variants (id, product_id, color_id, img_url, full_price, monthly_price, default_variant)
 VALUES (1, 1, 1, '/images/samsung_Galaxy_Flip6_black.png', 1149.00, 95.75, true),

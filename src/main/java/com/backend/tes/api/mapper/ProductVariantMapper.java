@@ -8,19 +8,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ProductVariantMapper {
 
-    ProductVariantMapper INSTANCE = Mappers.getMapper(ProductVariantMapper.class);
-
-    @Mapping(target = "color", source="color.name")
-    @Mapping(target = "qtyInStock", source="stock.qtyInStock")
+    @Mapping(source="color.name", target = "color")
+    @Mapping(source="stock.qtyInStock", target = "qtyInStock")
     ProductVariantDto ProductVariantToProductVariantDto(ProductVariant productVariant);
 
-//    @Mapping(target = "color.name", source="color")
-//    @Mapping(target = "stock.qtyInStock", source="qtyInStock")
-//    Product ProductVariantDtoToProductVariant(ProductVariantDto productVariantDto, String color, Integer qtyInStock);
-
-    // Example for updating entity from dto
-    // void updateProductVariantFromDto(ProductVariantDto productVariantDto, @MappingTarget ProductVariant productVariant);
 }

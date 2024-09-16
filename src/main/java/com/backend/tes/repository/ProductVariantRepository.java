@@ -1,23 +1,10 @@
 package com.backend.tes.repository;
 
-import com.backend.tes.domain.Color;
-import com.backend.tes.domain.Product;
 import com.backend.tes.domain.ProductVariant;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
-import java.util.List;
-
+@Repository
 public interface ProductVariantRepository extends JpaRepository<ProductVariant, Long> {
-
-    List<ProductVariant> findByColor(Color color);
-
-
-//
-//    List<ProductVariant> findByProductAndFullPriceBetween(Product product, BigDecimal startPrice, BigDecimal endPrice);
-//
-//    List<ProductVariant> findByDefaultVariantTrue();
-//
-//    List<ProductVariant> findByProductAndMonthlyPriceLessThanEqual(Product product, BigDecimal maxMonthlyPrice);
 
 }

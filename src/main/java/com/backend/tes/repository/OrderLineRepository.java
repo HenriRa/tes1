@@ -1,17 +1,10 @@
 package com.backend.tes.repository;
 
-import com.backend.tes.domain.Order;
 import com.backend.tes.domain.OrderLine;
-import com.backend.tes.domain.ProductVariant;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
+@Repository
 public interface OrderLineRepository extends JpaRepository<OrderLine, Long> {
 
-//    List<OrderLine> findByOrderHeader(Order orderHeader);
-//
-//    List<OrderLine> findByProductVariant(ProductVariant productVariant);
-//
-//    List<OrderLine> findByOrderHeaderAndProductVariant(Order orderHeader, ProductVariant productVariant);
 }

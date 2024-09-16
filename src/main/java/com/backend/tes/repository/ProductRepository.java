@@ -1,8 +1,14 @@
 package com.backend.tes.repository;
 
 import com.backend.tes.domain.Product;
+import com.backend.tes.domain.query.ProductByFilter;
+import jakarta.persistence.NamedNativeQuery;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -12,41 +18,51 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    List<Product> findByBrandNameIn(Collection<String> brandNames);
+//    @Query(value = "SELECT p.id AS productID, b.name AS brand, p.code AS productCode, p.name AS productName, " +
+//            "p.short_description AS shortDescription, p.order_count AS orderCount, " +
+//            "c.name AS color, pv.img_url AS imgUrl, pv.monthly_price AS monthlyPrice, " +
+//            "pv.default_variant AS defaultVariant, s.qty_in_stock AS qtyInStock " +
+//            "FROM products p " +
+//            "JOIN brands b ON p.brand_id = b.id " +
+//            "JOIN product_variants pv ON p.id = pv.product_id " +
+//            "JOIN colors c ON pv.color_id = c.id " +
+//            "LEFT JOIN stock s ON pv.id = s.variant_id " +
+//            "WHERE (:brandNames IS NULL OR b.name IN (:brandNames)) " +
+//            "AND p.id = ANY " +
+//                    "(SELECT pv1.product_id " +
+//                    "FROM product_variants pv1 " +
+//                    "JOIN colors c1 ON pv1.color_id = c1.id " +
+//                    "LEFT JOIN stock s1 ON pv1.id = s1.variant_id " +
+//                    "WHERE (:colorNames IS NULL OR c1.name IN (:colorNames)) " +
+//                    "AND (:inStock IS NULL OR (s1.qty_in_stock > 0) = :inStock) " +
+//                    "AND ((:priceIntervals IS NULL) OR EXISTS (" +
+//                    " SELECT 1 FROM price_intervals pi " +
+//                    " WHERE pv1.monthly_price BETWEEN pi.min_price AND pi.max_price " +
+//                    " AND pi.name IN (:priceIntervals)))) " +
+////            "ORDER BY p.order_count DESC ", nativeQuery = true)
+//            "ORDER BY (CASE " +
+//            " WHEN :sortBy = 'price_asc' THEN pv.monthly_price " +
+//            " WHEN :sortBy = 'price_desc' THEN -pv.monthly_price " +
+//            " ELSE -p.order_count " +
+//            " END) ",
+//            nativeQuery = true)
 
-    List<Product> findByProductVariantsColorNameIn(Collection<String> colorNames);
+    @Query(name = "Product.findProductsByFilters", nativeQuery = true)
 
-    List<Product> findByBrandNameInAndProductVariantsColorNameIn(Collection<String> brandName, Collection<String> colorName);
-
-//    List<Product> findByProductVariantsPriceBetweenOrProductVariantsPriceBetweenOrProductVariantsPriceBetweenOrProductVariantsPriceBetweenOrProductVariantsPriceBetween(
-//            BigDecimal startPrice1, BigDecimal endPrice1,
-//            BigDecimal startPrice2, BigDecimal endPrice2,
-//            BigDecimal startPrice3, BigDecimal endPrice3,
-//            BigDecimal startPrice4, BigDecimal endPrice4,
-//            BigDecimal startPrice5, BigDecimal endPrice5);
-
-    List<Product> findByProductVariantsStockQtyInStockGreaterThan(Integer qty);
+    List<ProductByFilter> findProductsByFilter(
+        @Param("brandNames") List<String> brandNames,
+        @Param("colorNames") List<String> colorNames,
+        @Param("inStock") Boolean inStock,
+        @Param("priceIntervals") List<String> priceIntervals
+//        @Param("sortBy") String sortBy
+    );
 
 
 
-    List<Product> findByProductVariantsStockQtyInStockIsNull();
-
-    List<Product> findByProductVariantsStockQtyInStockIsNotNull();
-
-    List<Product> findByProductVariantsMonthlyPriceBetween(BigDecimal startPrice, BigDecimal endPrice);
-
-    // Create a new query method to find products by their brand name and color name and monthly price between two values
-    List<Product> findByBrandNameInAndProductVariantsColorNameInAndProductVariantsMonthlyPriceBetween
-        (Collection<String> brandName, Collection<String> colorName, BigDecimal startPrice, BigDecimal endPrice);
-
-    // Create a new query method to find products by applying multiple monthly price filters
-    // for example, price is between 0-10 and between 50-100 and between 150-200
-    @Query("""
-            select p from Product p inner join p.productVariants productVariants
-            where productVariants.monthlyPrice between ?1 and ?2 and productVariants.monthlyPrice between ?3 and ?4 and productVariants.monthlyPrice between ?5 and ?6""")
-    List<Product> findByProductVariantsMonthlyPriceBetweenAndProductVariantsMonthlyPriceBetweenAndProductVariantsMonthlyPriceBetween
-        (BigDecimal startPrice1, BigDecimal endPrice1, BigDecimal startPrice2, BigDecimal endPrice2, BigDecimal startPrice3, BigDecimal endPrice3);
-
+    // Used for testing examples
+//    List<Product> findByBrandNameIn(Collection<String> brandNames);
+//
+//    List<Product> findByProductVariantsColorNameIn(Collection<String> colorNames);
 
 
 }
