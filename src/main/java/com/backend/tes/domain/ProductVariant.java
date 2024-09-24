@@ -20,16 +20,15 @@ public class ProductVariant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "color_id", nullable = false)
     private Color color;
 
     private String imgUrl;
-    private BigDecimal fullPrice;
     private BigDecimal monthlyPrice;
     private Boolean defaultVariant;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "id", referencedColumnName = "variant_id")
     private Stock stock;
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 public record ProductDto(
         Long id,
+        String productGroup,
         String brand,
         String code,
         String name,

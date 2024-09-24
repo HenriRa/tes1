@@ -4,12 +4,8 @@ import com.backend.tes.api.dto.ProductDto;
 import com.backend.tes.api.mapper.ProductMapper;
 import com.backend.tes.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +14,6 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
-
     private final ProductMapper productMapper;
 
 //    public Page<Object[]> searchProducts(
@@ -35,19 +30,22 @@ public class ProductService {
 //
 //    }
 
+    public List<ProductDto> findAllProducts(String productGroup,
+                                            List<String> brands,
+                                            List<String> colors,
+                                            Boolean inStock,
+                                            List<String> priceIntervals) {
+        return productRepository.findProductsByFilters(productGroup, brands, colors, inStock, priceIntervals)
+                .stream()
+                .map(productMapper::productToProductDto)
+                .collect(Collectors.toList());
+    }
 
-
-//    public Page<ProductDto> findAllProducts() {
-//        return productRepository.findAll(Pageable).stream()
-//                .map(productMapper::productToProductDto)
-//                .collect(Collectors.toList());
-//    }
-
-//    public ProductDto findProductById(Long id) {
-//        return productRepository.findById(id)
-//                .map(productMapper::productToProductDto)
-//                .orElse(null);
-//    }
+    public ProductDto findProductById(Long id) {
+        return productRepository.findById(id)
+                .map(productMapper::productToProductDto)
+                .orElse(null);
+    }
 
 
 }

@@ -1,6 +1,7 @@
 package com.backend.tes.repository;
 
 import com.backend.tes.domain.Product;
+import com.backend.tes.domain.ProductVariant;
 import com.backend.tes.domain.query.ProductByFilter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,24 +74,34 @@ class ProductRepositoryTest {
 
     @Test
     public void testNativeQuery() {
-        // Set up data
-//        Product product = new Product();
-//        entityManager.persist(product);
-//        entityManager.flush();
 
         // Execute the query
-        List<ProductByFilter> products = productRepository.findProductsByFilter(
+        final List<Product> products = productRepository.findProductsByFilters(
+                "Mobile phones",
                 List.of("Samsung","Xiaomi"),
-                List.of("Black"),
+                List.of("Black","Blue"),
                 true,
-                List.of("price_monthly_50_100")
+                List.of("price_monthly_50_100","price_monthly_100_150")
 //                "price_asc"
         );
         assertThat(products).isNotEmpty();
-        assertThat(products).hasSize(5);
-//        Product product = (Product) products.get(0)[0];
-//        System.out.print(product.toString());
+        assertThat(products).hasSize(2);
+        List<ProductVariant> prodVars = products.getFirst().getProductVariants();
+
+        System.out.println(prodVars.toString());
+        System.out.println(products.toString());
 //        assertEquals(2, products.get(0).length);
+
+    }
+
+    @Test
+    public void findById_findOneProduct(){
+        final Product product = productRepository.findById(1L).get();
+
+        assertThat(product).isNotNull();
+        assertThat(product.getId()).isEqualTo(1L);
+        List<ProductVariant> prodVars = product.getProductVariants();
+        System.out.println(prodVars.toString());
 
     }
 

@@ -28,7 +28,7 @@ class ClassifierControllerIntegrationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isMap())
-                .andExpect(jsonPath("$", aMapWithSize(2)))
+                .andExpect(jsonPath("$", aMapWithSize(4)))
                 .andExpect(jsonPath("$.brands.length()").value(8))
                 .andExpect(jsonPath("$.colors.length()").value(13));
     }

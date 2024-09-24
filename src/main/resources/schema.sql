@@ -1,3 +1,9 @@
+drop table if exists product_groups;
+CREATE TABLE product_groups (
+  id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  name varchar(50) NOT NULL
+);
+
 drop table if exists colors;
 CREATE TABLE colors (
   id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -10,14 +16,25 @@ CREATE TABLE brands (
   name varchar(30)
 );
 
+drop table if exists price_intervals;
+CREATE TABLE price_intervals (
+  id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  name varchar(45),
+  min_price decimal(8, 2),
+  max_price decimal(8, 2)
+);
+
 drop table if exists products;
 CREATE TABLE products (
   id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   brand_id int,
+    group_id int,
   code varchar(25) NOT NULL,
   name varchar(100) NOT NULL,
   short_description text,
-  FOREIGN KEY (brand_id) REFERENCES brands(id)
+  order_count int DEFAULT 0,
+  FOREIGN KEY (brand_id) REFERENCES brands(id),
+    FOREIGN KEY (group_id) REFERENCES product_groups(id)
 );
 
 drop table if exists product_variants;
