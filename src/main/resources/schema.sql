@@ -28,13 +28,13 @@ drop table if exists products;
 CREATE TABLE products (
   id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   brand_id int,
-    group_id int,
+  group_id int,
   code varchar(25) NOT NULL,
   name varchar(100) NOT NULL,
   short_description text,
   order_count int DEFAULT 0,
   FOREIGN KEY (brand_id) REFERENCES brands(id),
-    FOREIGN KEY (group_id) REFERENCES product_groups(id)
+  FOREIGN KEY (group_id) REFERENCES product_groups(id)
 );
 
 drop table if exists product_variants;
@@ -52,9 +52,10 @@ CREATE TABLE product_variants (
 
 drop table if exists stock;
 CREATE TABLE stock (
-  id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  variant_id int,
+  id int NOT NULL AUTO_INCREMENT,
+  variant_id int NOT NULL,
   qty_in_stock int,
+  PRIMARY KEY (id, variant_id),
   FOREIGN KEY (variant_id) REFERENCES product_variants(id)
 );
 

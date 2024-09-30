@@ -2,8 +2,11 @@ package com.backend.tes.api;
 
 import com.backend.tes.api.dto.ProductDto;
 import com.backend.tes.service.ProductService;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,29 +16,27 @@ import java.util.List;
 @RequestMapping("/api/shop")
 public class ProductController {
 
-    @Autowired
     private final ProductService productService;
 
-    @GetMapping("/products?productGroup={productGroup}&brands={brands}&colors={colors}&inStock={inStock}&priceIntervals={priceIntervals}")
-    public final @ResponseBody List<ProductDto> getAllProducts
-            (@RequestParam(value = "productGroup") String productGroup,
+    @GetMapping("/products")
+    public final @ResponseBody Page<ProductDto> getAllProducts
+            (@RequestParam(value = "productGroup", required = false) String productGroup,
              @RequestParam(value = "brands", required = false) List<String> brands,
              @RequestParam(value = "colors", required = false) List<String> colors,
              @RequestParam(value = "inStock", required = false) Boolean inStock,
-             @RequestParam(value = "priceIntervals", required = false) List<String> priceIntervals){
-        return productService.findAllProducts(productGroup, brands, colors, inStock, priceIntervals);
+             @RequestParam(value = "priceIntervals", required = false) List<String> priceIntervals,
+             Pageable pageable) {
+//             @RequestParam(value = "sortBy", required = false) String sortBy){
+
+        return productService.findAllProducts(productGroup, brands, colors, inStock, priceIntervals, pageable);
     }
 
-//    @GetMapping("/products/{id}")
-//    public @ResponseBody ProductDto getProductById(@PathVariable Long id){
-//        return productService.findProductById(id);
-//    }
-
-
-    @GetMapping("/products?id={id}")
-    public final @ResponseBody ProductDto getProductById
-            (@RequestParam(value = "id") Long id){
+    @GetMapping("/products/{id}")
+    public @ResponseBody ProductDto getProductById(@PathVariable Long id){
         return productService.findProductById(id);
     }
+
+
+
 
 }

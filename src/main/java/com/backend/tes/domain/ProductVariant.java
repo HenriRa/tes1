@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Entity
 @Table(name="product_variants")
@@ -20,7 +21,7 @@ public class ProductVariant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "color_id", nullable = false)
     private Color color;
 
@@ -28,8 +29,8 @@ public class ProductVariant {
     private BigDecimal monthlyPrice;
     private Boolean defaultVariant;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "id", referencedColumnName = "variant_id")
-    private Stock stock;
+    @OneToMany
+    @JoinColumn(name = "variant_id")
+    private Set<Stock> stock;
 
 }

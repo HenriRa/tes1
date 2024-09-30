@@ -9,16 +9,25 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 
-@Mapper(componentModel = "spring", uses = {ProductVariantMapper.class})
+@Mapper(componentModel = "spring"/*, uses = {ProductVariantMapper.class}*/)
 public interface ProductMapper {
 
     @Mapping(source = "productGroup.name", target = "productGroup")
     @Mapping(source="brand.name", target = "brand")
     ProductDto productToProductDto(Product product);
 
-//    default ProductVariantDto ProductVariantToProductVariantDto(ProductVariant productVariant) {
-//        return Mappers.getMapper(ProductVariantMapper.class)
-//                .ProductVariantToProductVariantDto(productVariant);
-//    }
+    @Mapping(source = "productGroup", target = "productGroup.name")
+    @Mapping(source="brand", target = "brand.name")
+    Product productDtoToProduct(ProductDto productDto);
+
+    default ProductVariantDto ProductVariantToProductVariantDto(ProductVariant productVariant) {
+        return Mappers.getMapper(ProductVariantMapper.class)
+                .ProductVariantToProductVariantDto(productVariant);
+    }
+
+    default ProductVariant ProductVariantDtoToProductVariant(ProductVariantDto productVariantDto) {
+        return Mappers.getMapper(ProductVariantMapper.class)
+                .ProductVariantDtoToProductVariant(productVariantDto);
+    }
 
 }
