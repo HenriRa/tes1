@@ -72,4 +72,4 @@ Here, you can test some of the currently implemented endpoints, review the reque
 
 ## Deployment
 
-
+The Spring Boot application is deployed to **AWS**, using **Elastic Beanstalk** as the platform (AWS Elastic Beanstalk is a Platform-as-a-Service (PaaS) that automates application deployment, including scaling, load balancing, and environment setup).
