@@ -49,7 +49,7 @@ git clone https://github.com/HenriRa/tes1.git
 cd tes1 
 ```
 2. Set up the database (will be noted afer MySQL implementation!)
-***Currently, the use of an in-memory H2 database is implemented for the sake of simplicity, and portability.***
+- ***Currently, the use of an in-memory H2 database is implemented for the sake of simplicity, and portability.***
  
 ### Running the Application
 1. Build the application using Maven:
@@ -68,4 +68,8 @@ Once the app is running, you can access the Swagger API documentation at:
 ```bash
 http://localhost:5000/swagger-ui/index.html
 ```
-Here, you can test the endpoints, review the request/response format, and explore available routes.
+Here, you can test some of the currently implemented endpoints, review the request/response format, and explore available routes.
+
+## Deployment
+
+
