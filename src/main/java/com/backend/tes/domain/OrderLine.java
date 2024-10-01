@@ -14,11 +14,7 @@ import java.math.BigDecimal;
 public class OrderLine {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "header_id", nullable = false)
-    private Order orderHeader;
+    private Long lineId;
 
     private Integer lineNo;
 

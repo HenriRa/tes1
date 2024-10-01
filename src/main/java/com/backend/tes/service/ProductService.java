@@ -19,55 +19,28 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
-//    public Page<Object[]> searchProducts(
-//            List<String> brands,
-//            List<String> colors,
-//            Boolean inStock,
-//            List<String> priceIntervals,
-//            String sortBy,
-//            int page,
-//            int size) {
-//
-//        Pageable pageable = PageRequest.of(page, size);
-//        return productRepository.findProductsByFilters(brands, colors, inStock, priceIntervals, sortBy, pageable);
-//
-//    }
-
     public ProductDto findProductById(Long id) {
         return productRepository.findById(id)
                 .map(productMapper::productToProductDto)
                 .orElse(null);
     }
 
-    public Page<ProductDto> findAllProducts(String productGroup,
+    public Page<ProductDto> findAllProducts(List<String> productGroup,
                                             List<String> brands,
                                             List<String> colors,
                                             Boolean inStock,
                                             List<String> priceIntervals,
-//                                            String sortBy
-                                            Pageable pageable) {
+                                            String sortBy) {
 
-        // pageable parse string to field and sortOrder
-        // Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("pv.monthlyPrice")));
-//        Sort.Order sortOrder = determineSortOrder(SortStrings.valueOf(sortBy.toUpperCase()));
-//        Pageable pageable = PageRequest.of(0, 10, Sort.by(sortOrder));
+        Pageable pageable;
+        if(sortBy != null) {
+            Sort.Order sortOrder = determineSortOrder(SortStrings.valueOf(sortBy.toUpperCase()));
+            pageable = PageRequest.of(0, 50, Sort.by(sortOrder));
+        }
+        else {
+            pageable = PageRequest.of(0, 50);
+        }
 
-        // Solution 1
-//        Sort sort = pageable.getSort();
-//        Pageable pageableRepo = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
-//
-//        return productRepository.findProductsByFilters(
-//                        productGroup,
-//                        brands,
-//                        colors,
-//                        inStock,
-//                        priceIntervals,
-//                        pageableRepo)
-//                .stream()
-//                .map(productMapper::productToProductDto)
-//                .collect(Collectors.toList());
-
-        // Solution 2
         Page<Product> productPage = productRepository.findProductsByFilters(
                 productGroup,
                 brands,
@@ -89,10 +62,10 @@ public class ProductService {
     }
 
     private Sort.Order determineSortOrder(SortStrings sortBy) {
-        return switch (sortBy) {
-            case PRICE_ASC -> Sort.Order.asc("pv.monthlyPrice");
-            case PRICE_DESC -> Sort.Order.desc("pv.monthlyPrice");
-            case POPULAR_DESC -> Sort.Order.desc("orderCount");
+        String[] parts = sortBy.toString().split("_");
+        return switch (parts[1]) {
+            case "ASC" -> Sort.Order.asc(sortBy.getValue());
+            case "DESC" -> Sort.Order.desc(sortBy.getValue());
             default -> throw new IllegalArgumentException("Invalid sortBy value: " + sortBy);
         };
     }

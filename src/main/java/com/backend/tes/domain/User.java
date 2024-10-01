@@ -18,15 +18,11 @@ import java.util.UUID;
 public class User {
     @Id
     @GeneratedValue(generator = "UUID")
-    private UUID id;
+    private UUID userId;
 
-    private String username;
+    private String userName;
     private String email;
-    private String password;
-
-    private Timestamp createdOn;
-    private Timestamp modifiedOn;
-
-    //private Role role;
+    private String password_hash;
+    private Timestamp createdAt;
 
 }

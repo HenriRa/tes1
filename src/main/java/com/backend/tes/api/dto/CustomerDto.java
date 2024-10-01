@@ -8,7 +8,6 @@ public record CustomerDto (
         String firstName,
         String lastName,
         String email,
-        String telephone,
-        List<AddressDto> addressList
+        String telephone
 ){
 }

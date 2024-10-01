@@ -15,7 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "SELECT p FROM Product p " +
             "LEFT JOIN p.productVariants pv " +
-            "WHERE (:productGroup IS NULL OR p.productGroup.name = :productGroup) " +
+            "WHERE (:productGroup IS NULL OR p.productGroup.name IN :productGroup) " +
             "AND (:brandNames IS NULL OR p.brand.name IN :brandNames) " +
             "AND (:colorNames IS NULL OR pv.color.name IN :colorNames) " +
             "AND (:inStock IS NULL " +
@@ -27,7 +27,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "      AND pi.name IN :priceIntervals)) ")
 
     Page<Product> findProductsByFilters(
-            @Param("productGroup") String productGroup,
+            @Param("productGroup") List<String> productGroup,
             @Param("brandNames") List<String> brandNames,
             @Param("colorNames") List<String> colorNames,
             @Param("inStock") Boolean inStock,

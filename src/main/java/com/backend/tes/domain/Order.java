@@ -27,10 +27,10 @@ public class Order {
     private Customer customer;
 
     private BigDecimal totalAmount;
+    private String orderStatus;
 
-    private String status;
-
-    @OneToMany(mappedBy = "orderHeader")
+    @OneToMany
+    @JoinColumn(name = "header_id")
     private Set<OrderLine> orderLines;
 
     // private List<OrderEvent> orderEvents;
