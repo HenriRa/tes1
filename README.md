@@ -1,6 +1,6 @@
 # Telia E-shop Backend API
 
-A RESTful API for managing products, stock, orders and customers/users in an e-commerce shop. Built with Java, Spring Boot (initialized with Spring Ini), and JPA.
+A RESTful API for managing products, stock, orders and customers/users in an e-commerce shop. Built with Java, Spring Boot (bootstrapped with [Spring Initializr](https://start.spring.io/)), and JPA.
 
 
 ## Table of Contents
@@ -48,7 +48,8 @@ Make sure you have the following installed on your machine:
 git clone https://github.com/HenriRa/tes1.git
 cd tes1 
 ```
-2. Set up the database (only afer MySQL implementation!)
+2. Set up the database (will be noted afer MySQL implementation!)
+***Currently, the use of an in-memory H2 database is implemented for the sake of simplicity, and portability.***
  
 ### Running the Application
 1. Build the application using Maven:
@@ -59,7 +60,7 @@ mvn clean install
 ```bash
 mvn spring-boot:run
 ```
-3. The API should now be accessible at: http://localhost:5000
+3. The API should now be accessible at: http://localhost:5000/api/shop/products
 
 ## API Documentation
 
