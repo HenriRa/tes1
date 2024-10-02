@@ -13,6 +13,7 @@ A RESTful API for managing products, stock, orders and customers/users in an e-c
   - [Installation](#installation)
   - [Running the Application](#running-the-application)
 - [API Documentation](#api-documentation)
+- [Deployment](#deployment)
 
 ## Project Overview
 
@@ -20,7 +21,7 @@ This project is the backend system for an e-shop application. It handles CRUD op
 
 ## Tech Stack
 
-- **Java 21**
+- **Java 21 (IntelliJ IDEA 2024.2.3 (Community Edition))**
 - **Spring Boot 3.3.4**
 - **Spring Data JPA**
 - **Hibernate**
