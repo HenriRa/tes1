@@ -1,25 +1,25 @@
 package com.backend.tes.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
-@Table(name = "customers")
+@Table(name="brands")
 @Data
 @Builder
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
-public class Customer {
+public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String telephone;
+    private String name;
 
 }
+

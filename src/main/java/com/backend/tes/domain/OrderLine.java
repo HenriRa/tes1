@@ -1,25 +1,28 @@
 package com.backend.tes.domain;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
+@Entity
+@Table(name="order_lines")
 @Data
 @Builder
-@AllArgsConstructor(access = AccessLevel.MODULE)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
 public class OrderLine {
-    private Long id;
-    private Timestamp createdOn;
-    private Timestamp modifiedOn;
-    private Long productId;
-    private String productCode;
-    private String productName;
-    private String productBrand;
-    private String productColor;
-    private BigDecimal productPrice;
-    private Integer qty;
-    private BigDecimal lineAmount;
-    // do we need order status for each line?
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long lineId;
+
+    private Integer lineNo;
+
+    @ManyToOne
+    @JoinColumn(name = "variant_id", nullable = false)
+    private ProductVariant productVariant;
+
+    private Integer quantity;
+    private BigDecimal totalLineAmount;
+
 }

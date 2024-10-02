@@ -4,16 +4,14 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name="stock")
+@Table(name="product_groups")
 @Data
 @Builder
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
-public class Stock {
+public class ProductGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private Integer qtyInStock;
-
+    private String name;
 }

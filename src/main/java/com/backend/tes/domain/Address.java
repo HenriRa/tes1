@@ -7,19 +7,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "customers")
+@Table(name="addresses")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String telephone;
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
+
+    private String address1;
+    private String address2;
+    private String city;
+    private String country;
+
+    private Boolean defaultAddress;
 
 }
