@@ -6,6 +6,7 @@ import com.backend.tes.domain.Brand;
 import com.backend.tes.domain.Color;
 import com.backend.tes.domain.PriceInterval;
 import com.backend.tes.domain.ProductGroup;
+import com.backend.tes.domain.enums.StockOptions;
 import com.backend.tes.repository.BrandRepository;
 import com.backend.tes.repository.ColorRepository;
 import com.backend.tes.repository.PriceIntervalRepository;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -32,8 +34,9 @@ public class ClassifierService {
         List<Color> colors = colorRepository.findAll();
         List<Brand> brands = brandRepository.findAll();
         List<PriceInterval> priceIntervals = priceIntervalRepository.findAll();
+        List<StockOptions> stockOptions = Arrays.asList(StockOptions.values());
 
-        return classifierMapper.classifiersToClassifierDto(productGroups, brands, colors, priceIntervals);
+        return classifierMapper.classifiersToClassifierDto(productGroups, brands, colors, priceIntervals, stockOptions);
     }
 
     // Product Group CRUD

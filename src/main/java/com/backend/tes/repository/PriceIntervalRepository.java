@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PriceIntervalRepository extends JpaRepository<PriceInterval, Long> {
 
+    PriceInterval findByName(String name);
+
 }

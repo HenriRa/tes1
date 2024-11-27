@@ -1,28 +1,29 @@
 package com.backend.tes.api;
 
 import com.backend.tes.api.dto.ProductDto;
+import com.backend.tes.api.dto.ProductResponseDto;
 import com.backend.tes.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequiredArgsConstructor
+@RestController
 @RequestMapping("/api/shop")
 public class ProductController {
 
     private final ProductService productService;
 
     @GetMapping("/products")
-    public final @ResponseBody Page<ProductDto> getAllProducts
+    public final @ResponseBody ProductResponseDto getAllProducts
             (@RequestParam(value = "productGroup", required = false) List<String> productGroup,
              @RequestParam(value = "brands", required = false) List<String> brands,
              @RequestParam(value = "colors", required = false) List<String> colors,
              @RequestParam(value = "inStock", required = false) Boolean inStock,
              @RequestParam(value = "priceIntervals", required = false) List<String> priceIntervals,
-             @RequestParam(value = "sort", required = false) String sortBy){
+             @RequestParam(value = "sort", required = false) String sortBy) {
 
         return productService.findAllProducts(productGroup, brands, colors, inStock, priceIntervals, sortBy);
     }
@@ -32,4 +33,14 @@ public class ProductController {
         return productService.findProductById(id);
     }
 
+    @PostMapping("/products/new")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody ProductDto addProduct(@RequestBody ProductDto productDto){
+        return productService.createProduct(productDto);
+    }
+
+    @PutMapping("/products/{id}/update")
+    public @ResponseBody ProductDto updateProduct(@RequestBody ProductDto productDto, @PathVariable Long id){
+        return productService.updateProduct(productDto, id);
+    }
 }
