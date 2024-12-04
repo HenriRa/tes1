@@ -7,7 +7,6 @@ import com.backend.tes.domain.PriceInterval;
 import com.backend.tes.domain.ProductGroup;
 import com.backend.tes.domain.enums.StockOptions;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,11 +14,6 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface ClassifierMapper {
 
-    @Mapping(target = "productGroups", expression = "java(mapProductGroups(productGroups))")
-    @Mapping(target = "colors", expression = "java(mapColors(colors))")
-    @Mapping(target = "brands", expression = "java(mapBrands(brands))")
-    @Mapping(target = "priceIntervals", expression = "java(mapPriceIntervals(priceIntervals))")
-    @Mapping(target = "stockOptions", expression = "java(mapStockOptions(stockOptions))")
     ClassifierDto classifiersToClassifierDto(
             List<ProductGroup> productGroups,
             List<Brand> brands,
@@ -47,7 +41,4 @@ public interface ClassifierMapper {
         return stockOptions.stream().map(String::valueOf).collect(Collectors.toList());
     }
 
-//    default String mapColor(Color color) {
-//        return color.getName();
-//    }
 }

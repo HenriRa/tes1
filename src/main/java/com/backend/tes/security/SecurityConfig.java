@@ -1,5 +1,6 @@
 package com.backend.tes.security;
 
+import com.backend.tes.config.BasicAuthProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,9 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import java.util.regex.Pattern;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
@@ -24,7 +22,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private static final String INCLUDE_REGEX_PATTERN = "^(%s)$";
+    private final BasicAuthProperties basicAuthProperties;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -49,9 +47,8 @@ public class SecurityConfig {
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
         UserDetails adminUser = User
-                .withUsername("admin")
-                .password(passwordEncoder().encode("Admin"))
-                .roles("ADMIN")
+                .withUsername(basicAuthProperties.name())
+                .password(passwordEncoder().encode(basicAuthProperties.password()))
                 .build();
         return new InMemoryUserDetailsManager(adminUser);
     }
@@ -59,12 +56,6 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
-    }
-
-
-    public RequestMatcher getRequestMatcher(final String paths) {
-        final Pattern pattern = Pattern.compile(INCLUDE_REGEX_PATTERN.formatted(paths));
-        return request -> pattern.matcher(request.getServletPath()).matches();
     }
 
 }

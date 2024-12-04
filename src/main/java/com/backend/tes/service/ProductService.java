@@ -1,7 +1,6 @@
 package com.backend.tes.service;
 
 import com.backend.tes.api.dto.ProductDto;
-import com.backend.tes.api.dto.ProductResponseDto;
 import com.backend.tes.api.mapper.ProductMapper;
 import com.backend.tes.domain.Product;
 import com.backend.tes.domain.enums.SortStrings;
@@ -23,7 +22,6 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-
     private final BrandRepository brandRepository;
     private final ProductGroupRepository productGroupRepository;
 
@@ -34,21 +32,17 @@ public class ProductService {
                 .orElseThrow(() -> new RecordNotFoundException("Product with id: " + id + " not found."));
     }
 
-    public /*Page<ProductDto>*/ ProductResponseDto findAllProducts(List<String> productGroup,
+    public Page<ProductDto> findAllProducts(List<String> productGroup,
                                             List<String> brands,
                                             List<String> colors,
                                             Boolean inStock,
                                             List<String> priceIntervals,
                                             String sortBy) {
 
-        Pageable pageable;
-        if(sortBy != null) {
-            Sort.Order sortOrder = determineSortOrder(SortStrings.valueOf(sortBy.toUpperCase()));
-            pageable = PageRequest.of(0, 5, Sort.by(sortOrder));
-        }
-        else {
-            pageable = PageRequest.of(0, 5);
-        }
+        if(sortBy == null) sortBy = SortStrings.DEFAULT_SORT;
+
+        Sort.Order sortOrder = determineSortOrder(SortStrings.valueOf(sortBy.toUpperCase()));
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(sortOrder));
 
         Page<Product> productPage = productRepository.findProductsByFilters(
                 convertToLowercase(productGroup),
@@ -62,16 +56,7 @@ public class ProductService {
                 .map(productMapper::productToProductDto)
                 .collect(Collectors.toList());
 
-        return new ProductResponseDto(
-                productDtoList,
-                productPage.getNumber(),
-                productPage.getSize(),
-                productPage.getTotalElements(),
-                productPage.getTotalPages(),
-                productPage.isLast()
-        );
-
-        //return new PageImpl<>(productDtoList, pageable, productPage.getTotalElements());
+        return new PageImpl<>(productDtoList, pageable, productPage.getTotalElements());
     }
 
 
@@ -80,7 +65,6 @@ public class ProductService {
         Product savedProduct = getProductOrThrowException(newProduct.getId());
         return productMapper.productToProductDto(savedProduct);
     }
-
 
     public ProductDto updateProduct(ProductDto productDto, long id) {
         Product product = getProductOrThrowException(id);

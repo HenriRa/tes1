@@ -8,4 +8,5 @@ public record ClassifierDto(
         List<String> colors,
         List<String> priceIntervals,
         List<String> stockOptions
-) {}
+) {
+}
