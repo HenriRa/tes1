@@ -15,9 +15,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "SELECT p FROM Product p " +
             "LEFT JOIN p.productVariants pv " +
-            "WHERE (:productGroup IS NULL OR p.productGroup.name IN :productGroup) " +
-            "AND (:brandNames IS NULL OR p.brand.name IN :brandNames) " +
-            "AND (:colorNames IS NULL OR pv.color.name IN :colorNames) " +
+            "WHERE (:productGroup IS NULL OR LOWER(p.productGroup.name) IN :productGroup) " +
+            "AND (:brandNames IS NULL OR LOWER(p.brand.name) IN :brandNames) " +
+            "AND (:colorNames IS NULL OR LOWER(pv.color.name) IN :colorNames) " +
             "AND (:inStock IS NULL " +
             "     OR (:inStock = TRUE AND ELEMENT(pv.stock).qtyInStock > 0) " +
             "     OR (:inStock = FALSE AND ELEMENT(pv.stock).qtyInStock = 0)) " +
@@ -34,5 +34,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("priceIntervals") List<String> priceIntervals,
             Pageable pageable
     );
+
 
 }

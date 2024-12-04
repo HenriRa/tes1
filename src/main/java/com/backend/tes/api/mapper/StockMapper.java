@@ -9,5 +9,4 @@ public interface StockMapper {
 
     StockDto stockToStockDto(Stock stock);
 
-    Stock stockDtoToStock(StockDto stockDto);
 }

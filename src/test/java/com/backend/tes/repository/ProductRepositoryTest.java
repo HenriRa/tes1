@@ -12,8 +12,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.test.context.ActiveProfiles;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Disabled
 @DataJpaTest
+@ActiveProfiles("test")
 @EnableSpringDataWebSupport
 class ProductRepositoryTest {
 
@@ -72,14 +77,39 @@ class ProductRepositoryTest {
 //        assertThat(result.get(1).getProductVariants().get(1).getColor().getName()).isEqualTo("Blue");
 //    }
 
+
+    @Test
+    void testCreateAndFindProduct() {
+        // Create a new product
+        Product product = new Product();
+        product.setName("Test Product");
+        product.setCode("TP001");
+        product.setShortDescription("This is a test product");
+        product.setOrderCount(BigInteger.valueOf(10));
+
+        // Save the product
+        Product savedProduct = productRepository.save(product);
+
+        // Find the product by ID
+        Optional<Product> foundProduct = productRepository.findById(savedProduct.getId());
+
+        // Assert the product was found and the details are correct
+        assertThat(foundProduct).isPresent();
+        assertThat(foundProduct.get().getName()).isEqualTo("Test Product");
+        assertThat(foundProduct.get().getCode()).isEqualTo("TP001");
+        assertThat(foundProduct.get().getShortDescription()).isEqualTo("This is a test product");
+        assertThat(foundProduct.get().getOrderCount()).isEqualTo(BigDecimal.valueOf(19.99));
+    }
+
+
     @Test
     public void testNativeQuery() {
 
-        Pageable pageable = PageRequest.of(0, 3, Sort.by(Sort.Order.asc("orderCount")));
+        Pageable pageable = PageRequest.of(0, 3, Sort.by(Sort.Order.desc("orderCount")));
 
         // Execute the query
         final Page<Product> products = productRepository.findProductsByFilters(
-                "Mobile phones",
+                List.of("Mobile phones"),
                 List.of("Redmi"),
                 /*List.of("Black")*/null,
                 null,

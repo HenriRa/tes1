@@ -13,5 +13,4 @@ public record ProductDto(
         BigInteger orderCount,
         List<ProductVariantDto> productVariants
 ) {
-
 }

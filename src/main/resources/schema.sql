@@ -46,9 +46,11 @@ CREATE TABLE product_variants (
   img_url varchar(255),
   full_price decimal(8, 2),
   monthly_price decimal(8, 2),
+  price_int_id int,
   default_variant boolean,
   FOREIGN KEY (product_id) REFERENCES products(id),
-  FOREIGN KEY (color_id) REFERENCES colors(id)
+  FOREIGN KEY (color_id) REFERENCES colors(id),
+  FOREIGN KEY (price_int_id) REFERENCES price_intervals(id)
 );
 
 drop table if exists stock;
