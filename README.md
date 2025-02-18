@@ -33,7 +33,7 @@ This project is the backend system for an e-shop application. It handles CRUD op
 ## Database Schema
 
 The following is a visual schema for the e-shop:
-![tes_db_structure](https://github.com/user-attachments/assets/a3e51c23-cab9-48ac-921a-958f97a71d00)
+![Current_DB_schema](https://github.com/user-attachments/assets/54a7e9e0-fc35-4f53-ac1d-ebe3fc54fa23)
 
 ## Getting Started
 ### Prerequisites
@@ -50,7 +50,7 @@ git clone https://github.com/HenriRa/tes1.git
 cd tes1 
 ```
 2. Set up the database (will be noted afer MySQL implementation!)
-- ***Currently, the use of an in-memory H2 database is implemented for the sake of simplicity, and portability.***
+- ***Currently, the use of an in-memory H2 database is implemented for the sake of simplicity and portability.***
  
 ### Running the Application
 1. Build the application using Maven:
